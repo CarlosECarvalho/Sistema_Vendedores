@@ -10,6 +10,7 @@ namespace SalesWebMVC.Models
         public double BaseSalary { get; set; }
         public DateTime BirthDate { get; set; }
         public Department Department { get; set; } // vinculo o vendedor ao seu departamento
+        public int DepartmentID { get; set; }
         public ICollection<SalesRecord> Sales { get; set; } = new List<SalesRecord>(); //vinculo o vendedor a suas vendas
 
         public Seller() { }
