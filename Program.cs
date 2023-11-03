@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SalesWebMVC.Data;
+using SalesWebMVC.Services;
 
 namespace SalesWebMVC
 {
@@ -15,6 +16,7 @@ namespace SalesWebMVC
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<SeedingService>(); //adiciono o seedingservice ao escopo do builder
+            builder.Services.AddScoped<SellerService>();
 
 
             var app = builder.Build();
@@ -29,7 +31,7 @@ namespace SalesWebMVC
 
             app.Services.CreateScope().ServiceProvider
                         .GetRequiredService<SeedingService>()
-                        .Seed(); //chamo o seedingservice para a execucao do app
+                        .Seed(); //chamo o seedingservice para a execucao do appS
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
