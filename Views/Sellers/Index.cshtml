@@ -8,6 +8,10 @@
 
 <h2>@ViewData["Title"]</h2>
 
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
 <table class="table table-striped table-hover">
     <thead>
         <tr>
@@ -30,7 +34,7 @@
                 <td><a asp-action="Edit" asp-route-id="@item.SellerID">Edit</a></td>
                 <td><a asp-action="Details" asp-route-id="@item.SellerID">Details</a></td>
                 <td><a asp-action="Delete" asp-route-id="@item.SellerID">Delete</a></td>
-            </tr>
+            </tr> 
         }
     </tbody>
 </table>
