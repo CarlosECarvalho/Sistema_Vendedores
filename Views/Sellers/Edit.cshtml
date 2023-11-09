@@ -3,19 +3,20 @@
 *@
 @model SalesWebMVC.Models.ViewModels.SellerFormViewModel
 @{
-    ViewData["Title"] = "Cadastrar Pessoa";
+    ViewData["Title"] = "Editar Pessoa";
 }
 <h2>@ViewData["Title"]</h2>
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Seller.SellerID" /> <!--Crio um campo oculto para repassar o ID do vendedor-->
             <div class="form-group">
                 <label asp-for="Seller.Name" class="control-label"></label>
-                <input asp-for="Seller.Name" class="form-control"/>
+                <input asp-for="Seller.Name" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="Seller.Email" class="control-label"></label>
-                <input asp-for="Seller.Email" class="form-control"/>
+                <input asp-for="Seller.Email" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="Seller.BirthDate" class="control-label"></label>
@@ -23,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Seller.BaseSalary" class="control-label"></label>
-                <input asp-for="Seller.BaseSalary" class="form-control"/>
+                <input asp-for="Seller.BaseSalary" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="Seller.DepartmentID" class="control-label"></label>
@@ -32,7 +33,7 @@
             </div>
             <div>
                 <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Save" class="btn btn-primary" />
                 </div>
             </div>
 

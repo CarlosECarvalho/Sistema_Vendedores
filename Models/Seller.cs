@@ -1,15 +1,24 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace SalesWebMVC.Models
 {
     public class Seller
     {
         public int SellerID { get; set; }
+        [Display(Name="Nome")]//utilizo anotations para formatar a exibição conforme a melhor visualização para o usuário
         public string Name { get; set; }
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+        [Display(Name = "Salário Base")]
+        [DataType(DataType.Currency)]
         public double BaseSalary { get; set; }
+        [Display(Name="Data de Nascimento")]
+        [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
+        [Display(Name = "Departamento")]
         public Department Department { get; set; } // vinculo o vendedor ao seu departamento
+        [Display(Name="Departamento")]
         public int DepartmentID { get; set; }
         public ICollection<SalesRecord> Sales { get; set; } = new List<SalesRecord>(); //vinculo o vendedor a suas vendas
 

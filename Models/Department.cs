@@ -1,8 +1,11 @@
-﻿namespace SalesWebMVC.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SalesWebMVC.Models
 {
     public class Department
     {
         public int Id { get; set; }
+        [Display(Name = "Nome")]
         public string Name { get; set; }
         public ICollection<Seller> Sellers { get; set; } = new List<Seller>(); //vai instanciar os vendedores do departamento
 

@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SalesWebMVC.Data;
 using SalesWebMVC.Services;
+using System.Globalization;
 
 namespace SalesWebMVC
 {
@@ -17,10 +19,12 @@ namespace SalesWebMVC
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<SeedingService>(); //adiciono o seedingservice ao escopo do builder
             builder.Services.AddScoped<SellerService>();
-
+            builder.Services.AddScoped<DepartmentService>();
+            
 
             var app = builder.Build();
-
+            var ptBR = new CultureInfo("pt-BR"); //crio o CultureInfo pro idioma desejado
+            var localizations = new RequestLocalizationOptions { DefaultRequestCulture = new RequestCulture(ptBR), SupportedCultures = new List<CultureInfo> { ptBR }, SupportedUICultures = new List<CultureInfo> { ptBR } }; //indico os parametros pra Localization dos elementos da aplicacao
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -35,7 +39,7 @@ namespace SalesWebMVC
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseRequestLocalization(localizations); //configuro a Localization da aplicação
             app.UseRouting();
 
             app.UseAuthorization();
