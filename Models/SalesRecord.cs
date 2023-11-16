@@ -1,14 +1,28 @@
 ﻿using SalesWebMVC.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace SalesWebMVC.Models
 {
     public class SalesRecord
     {
+        [Display(Name ="Número da Venda")]
         public int SalesRecordId { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Data da Venda")]
         public DateTime Date { get; set; }
+
+        [DataType(DataType.Currency)]
+        [Display(Name = "Valor da Venda")]
         public double Amount { get; set; }
+
+        [Display(Name = "Situação da Venda")]
         public SaleStatus Status { get; set; }
-        public Seller Seller { get; set; }
+
+        public int SellerId { get; set; }
+		[Display(Name = "Vendedor")]
+		public Seller Seller { get; set; }
+        
 
         public SalesRecord () { }
 

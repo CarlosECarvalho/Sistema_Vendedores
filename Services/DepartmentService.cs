@@ -1,5 +1,7 @@
-﻿using SalesWebMVC.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SalesWebMVC.Data;
 using SalesWebMVC.Models;
+using SalesWebMVC.Services.Exceptions;
 
 namespace SalesWebMVC.Services
 {
@@ -12,9 +14,23 @@ namespace SalesWebMVC.Services
             _context = context;
         }
 
-        public List<Department> FindAll()
+        public async Task<List<Department>> FindAllAsync()
         {
-            return _context.Department.OrderBy(x => x.Name).ToList();
+            return await _context.Department.OrderBy(x => x.Name).ToListAsync();
+        }
+
+        public async Task RemoveAsync(int id)
+        {
+            try
+            {
+                var obj = await _context.Department.FindAsync(id);
+                _context.Department.Remove(obj);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                throw new IntegrityException("Não foi possível apagar o Departamento, pois já possui vendedores cadastrados.");
+            }
         }
     }
 }

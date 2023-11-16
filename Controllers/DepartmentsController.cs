@@ -1,18 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SalesWebMVC.Data;
 using SalesWebMVC.Models;
+using SalesWebMVC.Models.ViewModels;
+using SalesWebMVC.Services;
+using SalesWebMVC.Services.Exceptions;
+using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SalesWebMVC.Controllers
 {
     public class DepartmentsController : Controller
     {
         private readonly SalesWebMVCContext _context;
+            
 
         public DepartmentsController(SalesWebMVCContext context)
         {
@@ -36,7 +38,7 @@ namespace SalesWebMVC.Controllers
             }
 
             var department = await _context.Department
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.DepartmentId == id);
             if (department == null)
             {
                 return NotFound();
@@ -56,7 +58,7 @@ namespace SalesWebMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name")] Department department)
+        public async Task<IActionResult> Create([Bind("DepartmentId,Name")] Department department)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +77,8 @@ namespace SalesWebMVC.Controllers
                 return NotFound();
             }
 
-            var department = await _context.Department.FindAsync(id);
+            var department = await _context.Department
+                .FirstOrDefaultAsync(m => m.DepartmentId == id);
             if (department == null)
             {
                 return NotFound();
@@ -88,9 +91,9 @@ namespace SalesWebMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name")] Department department)
+        public async Task<IActionResult> Edit(int id, [Bind("DepartmentId,Name")] Department department)
         {
-            if (id != department.Id)
+            if (id != department.DepartmentId)
             {
                 return NotFound();
             }
@@ -104,7 +107,7 @@ namespace SalesWebMVC.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DepartmentExists(department.Id))
+                    if (!DepartmentExists(department.DepartmentId))
                     {
                         return NotFound();
                     }
@@ -127,7 +130,7 @@ namespace SalesWebMVC.Controllers
             }
 
             var department = await _context.Department
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.DepartmentId == id);
             if (department == null)
             {
                 return NotFound();
@@ -145,19 +148,35 @@ namespace SalesWebMVC.Controllers
             {
                 return Problem("Entity set 'SalesWebMVCContext.Department'  is null.");
             }
-            var department = await _context.Department.FindAsync(id);
-            if (department != null)
+            try
             {
-                _context.Department.Remove(department);
+                var department = await _context.Department.FindAsync(id);
+                if (department != null)
+                {
+                    _context.Remove(department);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            catch (Exception)
+            {
+                return RedirectToAction(nameof(Error), new { Message = "Não foi possível apagar o Departamento, pois já possui vendedores."});
+            }
         }
 
+        public IActionResult Error(string message)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
+        }
         private bool DepartmentExists(int id)
         {
-          return (_context.Department?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Department?.Any(e => e.DepartmentId == id)).GetValueOrDefault();
         }
-    }
+    }   
 }

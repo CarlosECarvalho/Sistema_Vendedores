@@ -1,12 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SalesWebMVC.Models
 {
     public class Department
     {
-        public int Id { get; set; }
+        public int DepartmentId { get; set; }
         [Display(Name = "Nome")]
+        [ForeignKey("Department")]
         public string Name { get; set; }
+
         public ICollection<Seller> Sellers { get; set; } = new List<Seller>(); //vai instanciar os vendedores do departamento
 
         public Department()

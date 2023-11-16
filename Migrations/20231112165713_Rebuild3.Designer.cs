@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SalesWebMVC.Data;
 
@@ -11,9 +12,11 @@ using SalesWebMVC.Data;
 namespace SalesWebMVC.Migrations
 {
     [DbContext(typeof(SalesWebMVCContext))]
-    partial class SalesWebMVCContextModelSnapshot : ModelSnapshot
+    [Migration("20231112165713_Rebuild3")]
+    partial class Rebuild3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,17 +27,17 @@ namespace SalesWebMVC.Migrations
 
             modelBuilder.Entity("SalesWebMVC.Models.Department", b =>
                 {
-                    b.Property<int>("DepartmentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("DepartmentId");
+                    b.HasKey("Id");
 
                     b.ToTable("Department");
                 });
@@ -53,7 +56,7 @@ namespace SalesWebMVC.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SellerId")
+                    b.Property<int>("SellerID")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
@@ -61,7 +64,7 @@ namespace SalesWebMVC.Migrations
 
                     b.HasKey("SalesRecordId");
 
-                    b.HasIndex("SellerId");
+                    b.HasIndex("SellerID");
 
                     b.ToTable("SalesRecord");
                 });
@@ -80,7 +83,7 @@ namespace SalesWebMVC.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int>("DepartmentID")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -94,7 +97,7 @@ namespace SalesWebMVC.Migrations
 
                     b.HasKey("SellerID");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("DepartmentID");
 
                     b.ToTable("Seller");
                 });
@@ -103,8 +106,8 @@ namespace SalesWebMVC.Migrations
                 {
                     b.HasOne("SalesWebMVC.Models.Seller", "Seller")
                         .WithMany("Sales")
-                        .HasForeignKey("SellerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("SellerID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Seller");
@@ -114,8 +117,8 @@ namespace SalesWebMVC.Migrations
                 {
                     b.HasOne("SalesWebMVC.Models.Department", "Department")
                         .WithMany("Sellers")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("DepartmentID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Department");

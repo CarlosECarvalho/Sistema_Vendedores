@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SalesWebMVC.Data;
 
@@ -11,9 +12,11 @@ using SalesWebMVC.Data;
 namespace SalesWebMVC.Migrations
 {
     [DbContext(typeof(SalesWebMVCContext))]
-    partial class SalesWebMVCContextModelSnapshot : ModelSnapshot
+    [Migration("20231115195726_Rebuild12")]
+    partial class Rebuild12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,7 +107,7 @@ namespace SalesWebMVC.Migrations
                     b.HasOne("SalesWebMVC.Models.Seller", "Seller")
                         .WithMany("Sales")
                         .HasForeignKey("SellerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Seller");
@@ -115,7 +118,7 @@ namespace SalesWebMVC.Migrations
                     b.HasOne("SalesWebMVC.Models.Department", "Department")
                         .WithMany("Sellers")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Department");
